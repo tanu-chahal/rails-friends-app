@@ -1,38 +1,34 @@
 <% content_for :title, "All Friends" %>
 
-<div id="friends">
-<table class="table table-striped table-bordered table-hover">
-  <thead class="table-dark">
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Phone</th>
-      <th>Twitter</th>
-      <th colspan="3">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @friends.each do |friend| %>
-    <tr>
-      <td><%= friend.first_name %></td></td>
-      <td><%= friend.last_name %></td>
-      <td><%= friend.email %></td>
-      <td><%= friend.phone %></td>
-      <td><%= friend.twitter %></td>
-      <td>
-        <%= link_to "Show", friend, class:"btn btn-secondary btn-sm"  %>
-      </td>
-      <td>
-        <%= link_to "Edit", edit_friend_path(friend), class:"btn btn-dark btn-sm"  %>
-      </td>
-      <td>
-        <%= link_to 'Delete', friend, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
-      </td>
-    </tr>
-  <% end %>
-</tbody>
-</table
-</div>
-
-<%= link_to "New friend", new_friend_path, class:"btn btn-secondary" %>
+<% if user_signed_in? %>
+  <div id="friends">
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Twitter</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @friends.each do |friend| %>
+          <% if friend.user == current_user %>
+            <tr>
+              <td><%= link_to friend.first_name + ' ' + friend.last_name, friend %></td></td>
+              <td><%= friend.email %></td>
+              <td><%= friend.phone %></td>
+              <td><%= friend.twitter %></td>
+              <td><%= link_to 'Delete', friend, data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table
+  </div>
+  <%= link_to "New friend", new_friend_path, class:"btn btn-secondary" %>
+<% else %>
+  <h1>Hello World!</h1>
+  <p>This is my first Rails App :)</p>
+<% end %>

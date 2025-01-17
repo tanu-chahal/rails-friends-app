@@ -11,8 +11,8 @@
   <br/>
   <br/>
   <%= link_to 'Edit', edit_friend_path(@friend), class:"btn btn-secondary" %>
+  <%= link_to 'Delete', @friend, data: { "turbo-method": :delete, turbo_confirm: 'Are you sure?' }, class: "btn btn-danger" %>
   <%= link_to 'Back', friends_path, class:"btn btn-dark" %>
-
 </div>
 
 
